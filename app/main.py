@@ -5,13 +5,11 @@ import sys
 
 
 def match_pattern(input_line, pattern):
-    if pattern == "\d":
+    if pattern == "\w":
         for c in input_line:
-            if c.isdigit():
+            if c.isalnum():
                 return True
         return False
-    if len(pattern) == 1:
-        return pattern in input_line
     else:
         raise RuntimeError(f"Unhandled pattern: {pattern}")
 
