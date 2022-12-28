@@ -14,7 +14,7 @@ def match_pattern(input_line, pattern):
         return any(c in c_in_positive_c_group for c in input_line)
     elif pattern.startswith("^["):
         c_in_negative_c_group = pattern.split(']')[0][2:]
-        return any(c in c_in_negative_c_group for c in input_line)
+        return any(c not in c_in_negative_c_group for c in input_line)
     elif len(pattern) == 1:
         return pattern in input_line
     else:
