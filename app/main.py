@@ -68,9 +68,9 @@ def match_pattern(input_line, pattern):
 
 
 def main():
-    pattern = sys.argv[2]
+    pattern = sys.argv[0]
     input_line = sys.stdin.read()
-    input_line = sys.stdin.read().splitlines()[1]
+    input_line = sys.stdin.read().splitlines()[0]
 
     if sys.argv[1] != "-E":
         print("Expected first argument to be '-E'")
