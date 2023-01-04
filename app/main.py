@@ -68,7 +68,7 @@ def match_pattern(input_line, pattern):
 
 
 def main():
-    pattern = sys.argv[0]
+    pattern = sys.argv[2]
     input_line = sys.stdin.read()
     input_line = sys.stdin.read().splitlines()[0]
 
