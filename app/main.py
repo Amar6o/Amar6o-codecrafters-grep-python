@@ -9,7 +9,7 @@ def match_pattern(input_line, pattern):
         return any(character.isdigit() for character in input_line)
     elif pattern == "\\w":
         return any(character.isalnum() for character in input_line)
-def match_here(remaining_input, pattern):
+def match_here(remaining_input, pattern, input_line):
     # Base case: empty pattern matches any input
     if pattern == "":
         return True
@@ -73,14 +73,14 @@ def main():
     input_line = sys.stdin.read().splitlines()[0]
 
     if sys.argv[1] != "-E":
-         print("Expected first argument to be '-E'")
-         exit(1)
+        print("Expected first argument to be '-E'")
+        exit(1)
 
     if match_pattern(input_line, pattern):
-         exit(0)
+        exit(0)
     else:
-         exit(1)
+        exit(1)
 
 
 if __name__ == "__main__":
-     main()
+    main()
