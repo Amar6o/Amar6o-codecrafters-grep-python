@@ -4,11 +4,12 @@ import sys
  # import lark - available if you need it!
 
 
-def match_pattern(input_line, pattern):
-    if pattern == "\\d":
-        return any(character.isdigit() for character in input_line)
-    elif pattern == "\\w":
-        return any(character.isalnum() for character in input_line)
+# def match_pattern(input_line, pattern):
+#     if pattern == "\\d":
+#         return any(character.isdigit() for character in input_line)
+#     elif pattern == "\\w":
+#         return any(character.isalnum() for character in input_line)
+
 def match_here(remaining_input, pattern, input_line):
     # Base case: empty pattern matches any input
     if pattern == "":
@@ -20,13 +21,13 @@ def match_here(remaining_input, pattern, input_line):
 
     if pattern.startswith("\\d"):
         if remaining_input[0].isdigit():
-            return match_here(remaining_input[1:], pattern[2:])
+            return match_here(remaining_input[1:], pattern[2:], input_line)
         else:
             return False
 
     elif pattern.startswith("\\w"):
         if remaining_input[0].isalnum():
-            return match_here(remaining_input[1:], pattern[2:])
+            return match_here(remaining_input[1:], pattern[2:], input_line)
         else:
             return False
 
@@ -44,13 +45,13 @@ def match_here(remaining_input, pattern, input_line):
     elif len(pattern) == 1:
         return pattern in input_line
 
-        if remaining_input[0] in characters_in_positive_character_group:
-            return match_here(remaining_input[1:], pattern[2+len(characters_in_positive_character_group):])
-        else:
-            return False
+        # if remaining_input[0] in characters_in_positive_character_group:
+        #     return match_here(remaining_input[1:], pattern[2+len(characters_in_positive_character_group):])
+        # else:
+        #     return False
     else:
         if remaining_input[0] == pattern[0]:
-            return match_here(remaining_input[1:], pattern[1:])
+            return match_here(remaining_input[1:], pattern[1:], input_line)
         else:
             return False
 
@@ -60,7 +61,7 @@ def match_pattern(input_line, pattern):
     if input_line == "":
         return False
 
-    if match_here(input_line, pattern):
+    if match_here(input_line, pattern, input_line):
         return True
     else:
         raise RuntimeError(f"Unhandled pattern: {pattern}")
