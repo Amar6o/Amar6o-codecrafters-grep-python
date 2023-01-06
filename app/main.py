@@ -29,7 +29,7 @@ def match_here(remaining_input, pattern, input_line):
         if remaining_input[0].isalnum():
             return match_here(remaining_input[1:], pattern[2:], input_line)
         else:
-            return False
+            return match_here(remaining_input[1:], pattern, input_line)
 
     elif pattern.startswith("[^"):
         characters_in_negative_character_group = pattern.split(']')[0][2:]
