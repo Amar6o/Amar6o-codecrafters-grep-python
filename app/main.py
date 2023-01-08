@@ -57,6 +57,8 @@ def match_here(remaining_input, pattern, input_line):
 
 
 def match_pattern(input_line, pattern):
+    if pattern[0] == "^":
+        return match_here(input_line, pattern[1:])
     # Base case: if there's no input remaining, the match failed
     if input_line == "":
         return False
@@ -70,7 +72,6 @@ def match_pattern(input_line, pattern):
 
 def main():
     pattern = sys.argv[2]
-    # input_line = sys.stdin.read()
     input_line = sys.stdin.read().splitlines()[0]
 
     if sys.argv[1] != "-E":
