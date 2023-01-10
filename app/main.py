@@ -14,6 +14,9 @@ def match_here(remaining_input, pattern, input_line):
     # Base case: empty pattern matches any input
     if pattern == "":
         return True
+    
+    if pattern == "$":
+        return remaining_input == ""
 
     # Base case: if there's no input remaining, the match failed
     if remaining_input == "":
