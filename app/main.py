@@ -19,14 +19,12 @@ def match_here(remaining_input, pattern, input_line):
         return remaining_input == ""
 
     # Base case: if there's no input remaining, the match failed
-    if remaining_input == "":
-        return False
-        
-    if pattern.endswith("+"):
-        
-        if pattern.startswith("\\d"):
-            if remaining_input[0].isdigit():
-              return match_here(remaining_input[1:], pattern[2:], input_line)
+    # if remaining_input == "":
+    #     return False
+    
+    if pattern.startswith("\\d"):
+        if remaining_input[0].isdigit():
+            return match_here(remaining_input[1:], pattern[2:], input_line)
         else:
             return match_here(remaining_input[1:], pattern, input_line)
 
