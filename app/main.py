@@ -73,7 +73,7 @@ def match_pattern(input_line, pattern):
     # Base case: if there's no input remaining, the match failed
     if input_line == "":
         return False
-    if pattern.endswith("+?"):
+    if pattern.endswith("+"):
         char = pattern[-2]
         if match_here(input_line, char, input_line):
             return match_here(input_line, pattern, input_line) or match_pattern(input_line[1:], pattern)
@@ -83,9 +83,8 @@ def match_pattern(input_line, pattern):
     if match_here(input_line, pattern, input_line):
         return True
     else:
-        # return False
-        # raise RuntimeError(f"Unhandled pattern: {pattern}")
-        return match_pattern(input_line[1:], pattern)
+        raise RuntimeError(f"Unhandled pattern: {pattern}")
+        return match_pattern(input_line[1,], pattern)
 
 
 def main():
