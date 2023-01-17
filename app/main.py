@@ -1,3 +1,4 @@
+import re
 import sys
 
  # import pyparsing - available if you need it!
@@ -67,7 +68,6 @@ def match_here(remaining_input, pattern, input_line):
 
 
 def match_pattern(input_line, pattern):
-    ishandled = False
     if pattern[0] == "^":
         return match_here(input_line, pattern[1:], input_line)
     # Base case: if there's no input remaining, the match failed
