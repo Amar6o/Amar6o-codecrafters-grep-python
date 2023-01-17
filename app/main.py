@@ -73,8 +73,8 @@ def match_pattern(input_line, pattern):
     # Base case: if there's no input remaining, the match failed
     if input_line == "":
         return False
-    if re.match("+", pattern):
-        char = pattern[-2]
+    if pattern.endswith("+"):
+        char = pattern[2]
         if match_here(input_line, char, input_line):
             return match_here(input_line, pattern, input_line) or match_pattern(input_line[1:], pattern)
         else:
