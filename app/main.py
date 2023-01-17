@@ -18,7 +18,10 @@ def match_here(remaining_input, pattern, input_line):
     
     if pattern == "$":
         return remaining_input == ""
-    
+
+    # Base case: if there's no input remaining, the match failed
+    if remaining_input == "":
+        return False
     if pattern[0] == "^":
         return match_here(input_line, pattern[1:], input_line)
     if input_line == "":
@@ -32,10 +35,6 @@ def match_here(remaining_input, pattern, input_line):
     if match_here(input_line, pattern, input_line):
         return True
     else:
-        return False
-
-    # Base case: if there's no input remaining, the match failed
-    if remaining_input == "":
         return False
     
     if pattern.startswith("\\d"):
