@@ -52,13 +52,18 @@ def match_here(remaining_input, pattern, input_line):
         #     return match_here(remaining_input[1:], pattern[2+len(characters_in_positive_character_group):])
         # else:
         #     return False
-    else:
-        if remaining_input[0] == pattern[0]:
-            return match_here(remaining_input[1:], pattern[1:], input_line)
-        else:
-            return False
-
-
+    # else:
+    #     if remaining_input[0] == pattern[0]:
+    #         return match_here(remaining_input[1:], pattern[1:], input_line)
+    #     else:
+    #         return False
+    elif len(pattern) == 1:
+        for i in range(len(remaining_input)):
+            if remaining_input[i] == pattern[0]:
+                return match_here(remaining_input[i+1:], pattern[1:])
+            else:
+                return False
+                
 def match_pattern(input_line, pattern):
     if pattern[0] == "^":
         return match_here(input_line, pattern[1:], input_line)
