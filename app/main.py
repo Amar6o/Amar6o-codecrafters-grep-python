@@ -22,13 +22,13 @@ def match_here(remaining_input, pattern, input_line):
     if remaining_input == "":
         return False
 
-    if pattern.startswith("\\d"):
+    if pattern.startswith("\\d+"):
         if remaining_input[0].isdigit():
             return match_here(remaining_input[1:], pattern[2:], input_line)
         else:
             return match_here(remaining_input[1:], pattern, input_line)
 
-    elif pattern.startswith("\\w"):
+    elif pattern.startswith("\\w+"):
         if remaining_input[0].isalnum():
             return match_here(remaining_input[1:], pattern[2:], input_line)
         else:
