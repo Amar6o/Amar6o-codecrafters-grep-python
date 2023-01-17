@@ -85,7 +85,7 @@ def match_pattern(input_line, pattern):
     else:
         # return False
         raise RuntimeError(f"Unhandled pattern: {pattern}")
-        return match_pattern(input_line[1:], pattern)
+        # return match_pattern(input_line[1:], pattern)
 
 
 def main():
