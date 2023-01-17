@@ -62,18 +62,18 @@ def match_here(remaining_input, pattern):
 #         return match_pattern(input_line[1:], pattern)
 
 
-# def main():
-#     pattern = sys.argv[2]
-#     input_line = sys.stdin.read().splitlines()[0]
+def main():
+    pattern = sys.argv[2]
+    input_line = sys.stdin.read().splitlines()[0]
 
-#     if sys.argv[1] != "-E":
-#         print("Expected first argument to be '-E'")
-#         exit(1)
+    if sys.argv[1] != "-E":
+        print("Expected first argument to be '-E'")
+        exit(1)
 
-#     if match_pattern(input_line, pattern):
-#         exit(0)
-#     else:
-#         exit(1)
+    if match_pattern(input_line, pattern):
+        exit(0)
+    else:
+        exit(1)
 
 
 if __name__ == "__main__":
