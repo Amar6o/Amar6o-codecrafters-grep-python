@@ -22,21 +22,7 @@ def match_here(remaining_input, pattern, input_line):
     # Base case: if there's no input remaining, the match failed
     if remaining_input == "":
         return False
-    if pattern[0] == "^":
-        return match_here(input_line, pattern[1:], input_line)
-    if input_line == "":
-        return False
-    if pattern.endswith("+"):
-        char = pattern[-2]
-        if match_here(input_line, char, input_line):
-            return match_here(input_line, pattern, input_line) or match_pattern(input_line[1:], pattern)
-        else:
-            return False
-    if match_here(input_line, pattern, input_line):
-        return True
-    else:
-        return False
-    
+           
     if pattern.startswith("\\d"):
         if remaining_input[0].isdigit():
             return match_here(remaining_input[1:], pattern[2:], input_line)
