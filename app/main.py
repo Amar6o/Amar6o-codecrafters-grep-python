@@ -48,32 +48,32 @@ def match_here(remaining_input, pattern):
         return False
 
 
-def match_pattern(input_line, pattern):
-    if pattern[0] == "^":
-        return match_here(input_line, pattern[1:], input_line)
-    # Base case: if there's no input remaining, the match failed
-    if input_line == "":
-        return False
+# def match_pattern(input_line, pattern):
+#     if pattern[0] == "^":
+#         return match_here(input_line, pattern[1:], input_line)
+#     # Base case: if there's no input remaining, the match failed
+#     if input_line == "":
+#         return False
 
-    if match_here(input_line, pattern, input_line):
-        return True
-    else:
-        raise RuntimeError(f"Unhandled pattern: {pattern}")
-        return match_pattern(input_line[1:], pattern)
+#     if match_here(input_line, pattern, input_line):
+#         return True
+#     else:
+#         raise RuntimeError(f"Unhandled pattern: {pattern}")
+#         return match_pattern(input_line[1:], pattern)
 
 
-def main():
-    pattern = sys.argv[2]
-    input_line = sys.stdin.read().splitlines()[0]
+# def main():
+#     pattern = sys.argv[2]
+#     input_line = sys.stdin.read().splitlines()[0]
 
-    if sys.argv[1] != "-E":
-        print("Expected first argument to be '-E'")
-        exit(1)
+#     if sys.argv[1] != "-E":
+#         print("Expected first argument to be '-E'")
+#         exit(1)
 
-    if match_pattern(input_line, pattern):
-        exit(0)
-    else:
-        exit(1)
+#     if match_pattern(input_line, pattern):
+#         exit(0)
+#     else:
+#         exit(1)
 
 
 if __name__ == "__main__":
