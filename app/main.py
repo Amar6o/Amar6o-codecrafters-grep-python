@@ -1,105 +1,169 @@
-import re
+import math
 import sys
-
+ 
+ # import re
  # import pyparsing - available if you need it!
  # import lark - available if you need it!
+ 
+ 
+def find_first_match_index(
+     input_line: str, pattern: str, start_flag: bool = False, end_flag: bool = False
+ ) -> int:
+     """
+     Finds the index of the first match of the given pattern in the input_line.
+     If no match is found, returns -1.
+ 
+     Parameters:
+         input_line (str): The text to search in.
+         pattern (str): The pattern to search for.
+ 
+     Returns:
+         int: The index of the first match, or -1 if no match is found.
+     """
 
-
-# def match_pattern(input_line, pattern):
-#     if pattern == "\\d":
-#         return any(character.isdigit() for character in input_line)
-#     elif pattern == "\\w":
-#         return any(character.isalnum() for character in input_line)
-
-def match_here(remaining_input, pattern, input_line):
-    # Base case: empty pattern matches any input
-    if pattern == "":
-        return True
-    
-    if pattern == "$":
-        return remaining_input == ""
-
-    # Base case: if there's no input remaining, the match failed
-    if remaining_input == "":
-        return False
-
-    if pattern.startswith("\\d"):
-        if remaining_input[0].isdigit():
-            return match_here(remaining_input[1:], pattern[2:], input_line)
-        else:
-            return match_here(remaining_input[1:], pattern, input_line)
-
-    elif pattern.startswith("\\w"):
-        if remaining_input[0].isalnum():
-            return match_here(remaining_input[1:], pattern[2:], input_line)
-        else:
-            return match_here(remaining_input[1:], pattern, input_line)
-
-    elif pattern.startswith("[^"):
-        characters_in_negative_character_group = pattern.split(']')[0][2:]
-        return any(character not in characters_in_negative_character_group for character in input_line)
-
-        if remaining_input[0] not in characters_in_negative_character_group:
-            return match_here(remaining_input[1:], pattern[3+len(characters_in_negative_character_group):])
-        else:
+    # Check of end of line.
+     if pattern == "$" and input_line == "":
+         return 0
+ 
+    # Check for patterns like \\d and \\w
+     if pattern in ("\\d", "\\w"):
+         for idx, char in enumerate(input_line):
+             if (pattern == "\\d" and char.isdigit()) or (
+                 pattern == "\\w" and (char.isalpha() or char.isdigit())
+             ):
+                 if not (start_flag) or (start_flag and idx == 0):
+                     return idx + 1
+    # Check for patterns like [abc] or [^abc]
+     elif pattern[0] == "[" and pattern[-1] == "]":
+         if pattern[1] == "^":
+             negative_pattern = pattern[2:-1]
+             for idx, c in enumerate(negative_pattern):
+                 if c in input_line:
+                     if not (start_flag) or (start_flag and idx == 0):
+                         return -1
+             else:
+                 return 0
+         else:
+             positive_pattern = pattern[1:-1]
+             for idx, c in enumerate(positive_pattern):
+                 idx = input_line.find(c)
+                 if idx != -1:
+                     if not (start_flag) or (start_flag and idx == 0):
+                         return idx + 1
+    # Check for regular characters
+     else:
+         idx = input_line.find(pattern)
+         if idx >= 0:
+             if not (start_flag) or (start_flag and idx == 0):
+                 return idx + 1
+ 
+     return -1
+ 
+ 
+def match_pattern_sequence(input_line: str, pattern: str) -> bool:
+     """
+     Check if input_line matches pattern. This method is called recursively.
+ 
+     Parameters:
+         input_line (str): Text to check.
+         pattern (str): patterns.
+ 
+     Returns:
+         bool: True if input_line matches pattern, False otherwise.
+     """
+ 
+     start_flag = False
+     end_flag = False
+     while pattern:
+        # Check for start flag
+         if pattern[0] == "^":
+             start_flag = True
+             pattern = pattern[1:]
+ 
+        # Check for end flag
+         if pattern[-1] == "$":
+             end_flag = True
+ 
+        # Get the current pattern to match
+         if pattern[0] == "\\":
+            pt, pattern = pattern[:2], pattern[2:]
+            current_pattern, pattern = pattern[:2], pattern[2:]
+         elif pattern[0] == "[":
+             closing_index = pattern.find("]") + 1
+             if closing_index == 0:
+                 raise ValueError("Closing not found")
+             pt, pattern = pattern[:closing_index], pattern[closing_index:]
+             current_pattern, pattern = pattern[:closing_index], pattern[closing_index:]
+         else:
+             pt, pattern = pattern[:1], pattern[1:]
+             current_pattern, pattern = pattern[:1], pattern[1:]
+ 
+        input_start_pos = find_first_match_index(input_line, pt, start_flag, end_flag)
+        # .
+        if pattern and pattern[0] == ".":
+            pattern = "^" + current_pattern + pattern
+ 
+        if input_start_pos < 0:
             return False
-    elif pattern.startswith("["):
-        characters_in_positive_character_group = pattern.split(']')[0][1:]
-        return any(character in characters_in_positive_character_group for character in input_line)
-    elif len(pattern) == 1:
-        return pattern in input_line
+        input_line = input_line[input_start_pos:]
+        if pattern and pattern[0] == "+":
+            pattern = pattern[1:]
+            match_len = 0
+            while True:
+                input_start_pos = find_first_match_index(
+                    input_line, current_pattern, start_flag, end_flag
+                )
+                print(input_start_pos)
+                if input_start_pos < 0:
+                    if match_len > 0:
+                        break
+                    else:
+                        return False
 
-        # if remaining_input[0] in characters_in_positive_character_group:
-        #     return match_here(remaining_input[1:], pattern[2+len(characters_in_positive_character_group):])
-        # else:
-        #     return False
-    elif len(pattern) == 1:
-        for i in range(len(remaining_input)):
-            if remaining_input[i] == pattern[0]:
-                return match_here(remaining_input[i+1:], pattern[1:])
-            else:
+                else:
+                    match_len += 1
+                    input_line = input_line[input_start_pos:]
+        else:
+            input_start_pos = find_first_match_index(
+                input_line, current_pattern, start_flag, end_flag
+            )
+
+            if input_start_pos < 0:
                 return False
-
-    else:
-        if remaining_input[0] == pattern[0]:
-            return match_here(remaining_input[1:], pattern[1:], input_line)
-        else:
-            return False
-
-
-def match_pattern(input_line, pattern):
-    if pattern[0] == "^":
-        return match_here(input_line, pattern[1:], input_line)
-    # Base case: if there's no input remaining, the match failed
-    if input_line == "":
-        return False
-    if pattern.endswith("+"):
-        char = pattern[2]
-        if match_here(input_line, char, input_line):
-            return match_here(input_line, pattern, input_line) or match_pattern(input_line[1:], pattern)
-        else:
-            return False
-
-    if match_here(input_line, pattern, input_line):
-        return True
-    else:
-        raise RuntimeError(f"Unhandled pattern: {pattern}")
-        return match_pattern(input_line[1:], pattern)
-
-
+            input_line = input_line[input_start_pos:]
+ 
+     # Return True once whole pattern is checked without returning False
+     return True
+ 
+ 
 def main():
-    pattern = sys.argv[2]
-    input_line = sys.stdin.read().splitlines()[0]
+     pattern = sys.argv[2]
+     input_line = sys.stdin.read()
+ 
+     if sys.argv[1] != "-E":
+         print("Expected first argument to be '-E'")
+         exit(1)
+ 
+     if match_pattern_sequence(input_line, pattern):
+         exit(0)
+     else:
+         exit(1)
+ 
+ 
+def main():
+     pattern = sys.argv[2]
+     input_line = sys.stdin.read()
+ 
+     if sys.argv[1] != "-E":
+         print("Expected first argument to be '-E'")
+         exit(1)
+ 
+     if match_pattern_sequence(input_line, pattern):
+         exit(0)
+     else:
 
-    if sys.argv[1] != "-E":
-        print("Expected first argument to be '-E'")
-        exit(1)
-
-    if match_pattern(input_line, pattern):
-        exit(0)
-    else:
-        exit(1)
-
-
+         exit(1)
+ 
+ 
 if __name__ == "__main__":
-    main()
+     main()
