@@ -76,27 +76,27 @@ def match_pattern_sequence(input_line: str, pattern: str) -> bool:
      end_flag = False
      while pattern:
         # Check for start flag
-         if pattern[0] == "^":
+        if pattern[0] == "^":
              start_flag = True
              pattern = pattern[1:]
  
         # Check for end flag
-         if pattern[-1] == "$":
+        if pattern[-1] == "$":
              end_flag = True
  
         # Get the current pattern to match
-         if pattern[0] == "\\":
+        if pattern[0] == "\\":
             pt, pattern = pattern[:2], pattern[2:]
             current_pattern, pattern = pattern[:2], pattern[2:]
-         elif pattern[0] == "[":
+        elif pattern[0] == "[":
              closing_index = pattern.find("]") + 1
              if closing_index == 0:
                  raise ValueError("Closing not found")
              pt, pattern = pattern[:closing_index], pattern[closing_index:]
              current_pattern, pattern = pattern[:closing_index], pattern[closing_index:]
-         else:
-             pt, pattern = pattern[:1], pattern[1:]
-             current_pattern, pattern = pattern[:1], pattern[1:]
+        else:
+            pt, pattern = pattern[:1], pattern[1:]
+            current_pattern, pattern = pattern[:1], pattern[1:]
  
         input_start_pos = find_first_match_index(input_line, pt, start_flag, end_flag)
         # .
@@ -167,3 +167,4 @@ def main():
  
 if __name__ == "__main__":
      main()
+
