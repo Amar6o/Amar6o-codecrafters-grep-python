@@ -6,7 +6,7 @@ import sys
  # import lark - available if you need it!
  
  
- def find_first_match_index(
+def find_first_match_index(
      input_line: str, pattern: str, start_flag: bool = False, end_flag: bool = False
  ) -> int:
      """
