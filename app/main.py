@@ -22,7 +22,7 @@ def find_first_match_index(
      """
  
      # Check of end of line.
-    if pattern == "$" and input_line == "":
+    if pattern == "$" and input_line == ""
         return 0
  
      # Check for patterns like \\d and \\w
@@ -49,7 +49,7 @@ def find_first_match_index(
                 idx = input_line.find(c)
                 if idx != -1:
                     if not (start_flag) or (start_flag and idx == 0):
-                        return idx + 1
+                    return idx + 1
      # Check for regular characters
     else:
         idx = input_line.find(pattern)
