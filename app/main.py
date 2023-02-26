@@ -95,40 +95,40 @@ def match_pattern_sequence(input_line: str, pattern: str) -> bool:
          else:
              current_pattern, pattern = pattern[:1], pattern[1:]
  
--        # .
--        if pattern and pattern[0] == ".":
--            pattern = "^" + current_pattern + pattern
--
--        if pattern and pattern[0] == "+":
--            pattern = pattern[1:]
-+        if pattern and pattern[0] in ("+", "?", "."):
-+            q_mode, pattern = pattern[0], pattern[1:]
+#-        # .
+#        if pattern and pattern[0] == ".":
+#            pattern = "^" + current_pattern + pattern
+#
+#        if pattern and pattern[0] == "+":
+#            pattern = pattern[1:]
+         if pattern and pattern[0] in ("+", "?", "."):
+             q_mode, pattern = pattern[0], pattern[1:]
              match_len = 0
              while True:
                  input_start_pos = find_first_match_index(
                      input_line, current_pattern, start_flag, end_flag
                  )
--                print(input_start_pos)
-+
+#                print(input_start_pos)
+ 
                  if input_start_pos < 0:
--                    if match_len > 0:
-+                    if q_mode == "+":
-+                        if match_len > 0:
-+                            break
-+                        else:
-+                            return False
-+                    elif q_mode == "?":
+#                    if match_len > 0:
+                     if q_mode == "+":
+                         if match_len > 0:
+                             break
+                         else:
+                             return False
+                     elif q_mode == "?":
                          break
--                    else:
--                        return False
--
+#                    else:
+#                        return False
+#
                  else:
                      match_len += 1
                      input_line = input_line[input_start_pos:]
-+
-+                    if q_mode in (".", "?") and match_len == 1:
-+                        break
-+
+ 
+                     if q_mode in (".", "?") and match_len == 1:
+                         break
+ 
          else:
              input_start_pos = find_first_match_index(
                  input_line, current_pattern, start_flag, end_flag
