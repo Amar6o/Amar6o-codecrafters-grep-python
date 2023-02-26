@@ -60,7 +60,7 @@ def find_first_match_index(
      return -1
  
  
- def match_pattern_sequence(input_line: str, pattern: str) -> bool:
+def match_pattern_sequence(input_line: str, pattern: str) -> bool:
      """
      Check if input_line matches pattern. This method is called recursively.
  
@@ -142,7 +142,7 @@ def find_first_match_index(
      return True
  
  
- def main():
+def main():
      pattern = sys.argv[2]
      input_line = sys.stdin.read()
  
@@ -156,7 +156,7 @@ def find_first_match_index(
          exit(1)
  
  
- def main():
+def main():
      pattern = sys.argv[2]
      input_line = sys.stdin.read()
  
