@@ -29,7 +29,7 @@ def find_first_match_index(
     if pattern in ("\\d", "\\w"):
         for idx, char in enumerate(input_line):
             if (pattern == "\\d" and char.isdigit()) or (
-                 pattern == "\\w" and (char.isalpha() or char.isdigit())
+                pattern == "\\w" and (char.isalpha() or char.isdigit())
             ):
                 if not (start_flag) or (start_flag and idx == 0):
                     return idx + 1
@@ -40,7 +40,7 @@ def find_first_match_index(
             for idx, c in enumerate(negative_pattern):
                 if c in input_line:
                     if not (start_flag) or (start_flag and idx == 0):
-                        return -1
+                    return -1
             else:
                 return 0
         else:
