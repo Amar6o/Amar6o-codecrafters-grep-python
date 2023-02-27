@@ -75,6 +75,7 @@ def match_pattern_sequence(input_line: str, pattern: str) -> bool:
      start_flag = False
      end_flag = False
      while pattern:
+#
          # Check for start flag
          if pattern[0] == "^":
              start_flag = True
@@ -84,23 +85,40 @@ def match_pattern_sequence(input_line: str, pattern: str) -> bool:
          if pattern[-1] == "$":
              end_flag = True
  
+#        # Check for alternation
+#        if pattern[0] == "(":
+#            closing_index = pattern.find(")")
+#            pipe_index = pattern.find("|")
+#            if closing_index == -1:
+#                raise ValueError(f"Alternation is not closed.{pattern}")
+#            if pipe_index == -1:
+#                break
+#
+#            alternations_str, pattern = (
+#                pattern[closing_index + 1 :],
+#            )
+#            print(alternations)
+#            for alt in alternations:
+#                if match_pattern_sequence(input_line, alt):
+#                    break
+#            else:
+#                return False
+#
+#        if len(pattern) == 0:
+#            return True
+#
          # Get the current pattern to match
          if pattern[0] == "\\":
              current_pattern, pattern = pattern[:2], pattern[2:]
          elif pattern[0] == "[":
              closing_index = pattern.find("]") + 1
              if closing_index == 0:
-                 raise ValueError("Closing not found")
+                raise ValueError("Closing not found")
+#                raise ValueError(f"Character group is not closed.{pattern}")
              current_pattern, pattern = pattern[:closing_index], pattern[closing_index:]
          else:
              current_pattern, pattern = pattern[:1], pattern[1:]
  
-#-        # .
-#        if pattern and pattern[0] == ".":
-#            pattern = "^" + current_pattern + pattern
-#
-#        if pattern and pattern[0] == "+":
-#            pattern = pattern[1:]
          if pattern and pattern[0] in ("+", "?", "."):
              q_mode, pattern = pattern[0], pattern[1:]
              match_len = 0
@@ -108,10 +126,8 @@ def match_pattern_sequence(input_line: str, pattern: str) -> bool:
                  input_start_pos = find_first_match_index(
                      input_line, current_pattern, start_flag, end_flag
                  )
-#                print(input_start_pos)
  
                  if input_start_pos < 0:
-#                    if match_len > 0:
                      if q_mode == "+":
                          if match_len > 0:
                              break
@@ -119,9 +135,6 @@ def match_pattern_sequence(input_line: str, pattern: str) -> bool:
                              return False
                      elif q_mode == "?":
                          break
-#                    else:
-#                        return False
-#
                  else:
                      match_len += 1
                      input_line = input_line[input_start_pos:]
@@ -172,3 +185,4 @@ def main():
  
 if __name__ == "__main__":
     main()
+
