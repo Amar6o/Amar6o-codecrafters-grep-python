@@ -95,8 +95,10 @@ def match_pattern_sequence(input_line: str, pattern: str) -> bool:
                  break
  
              alternations_str, pattern = (
+                 pattern[1:closing_index],
                  pattern[closing_index + 1 :],
              )
+             alternations = alternations_str.split("|")
              print(alternations)
              for alt in alternations:
                  if match_pattern_sequence(input_line, alt):
